@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Élégance Store — vêtements, accessoires et articles divers.">
+<title>Élégance Store</title>
+<style>
+:root{--gold:#c9a15a;--gold2:#e1bd73;--black:#090909;--cream:#f5eee4;--muted:#c8c0b5}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:var(--cream);color:#17120c}
+a{text-decoration:none;color:inherit}
+.topbar{background:#eee5da;padding:10px 5%;display:flex;justify-content:space-between;font-size:13px}
+nav{background:#080808;color:white;display:flex;align-items:center;justify-content:space-between;padding:18px 5%;position:sticky;top:0;z-index:10;border-bottom:1px solid #292929}
+.logo{font-family:Georgia,serif;color:var(--gold2);font-size:25px;letter-spacing:3px}.logo small{display:block;font-size:10px;letter-spacing:5px;text-align:center}
+.links{display:flex;gap:30px;font-size:14px}.links a:hover{color:var(--gold2)}
+.menu{display:none;font-size:25px}
+.hero{min-height:540px;background:radial-gradient(circle at 70% 45%,#352718 0,#100d0a 38%,#050505 72%);color:white;display:flex;align-items:center;padding:70px 8%;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;width:430px;height:430px;border-radius:50%;right:8%;background:linear-gradient(145deg,#3a2b1c,#090909);opacity:.7}
+.hero-content{max-width:650px;position:relative;z-index:2}.eyebrow{color:var(--gold2);letter-spacing:4px;font-size:13px;margin-bottom:20px}
+h1{font:54px Georgia,serif;letter-spacing:2px;margin-bottom:15px}.tagline{font:22px Georgia,serif;color:#eee;margin-bottom:30px}
+.btn{display:inline-block;padding:14px 24px;border:1px solid var(--gold);margin-right:10px;font-weight:bold;font-size:13px}.btn.gold{background:var(--gold);color:#111}.btn:hover{transform:translateY(-2px)}
+.features{background:#070707;color:white;display:grid;grid-template-columns:repeat(4,1fr);padding:25px 7%;gap:20px}.feature{text-align:center;padding:10px;border-right:1px solid #3b3328}.feature:last-child{border:0}.feature strong{display:block;color:var(--gold2);margin-bottom:6px}
+.section{padding:65px 6%}.title{text-align:center;font:36px Georgia,serif;margin-bottom:35px}.title span{color:var(--gold)}
+.categories{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}.cat{height:150px;border-radius:10px;display:flex;align-items:end;padding:18px;color:white;font:22px Georgia,serif;background:linear-gradient(135deg,#33271c,#111);box-shadow:inset 0 0 0 1px #765d35}.cat:hover{transform:translateY(-4px)}
+.products{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}.product{background:white;border-radius:10px;overflow:hidden;box-shadow:0 5px 20px #0001}.pic{height:220px;background:linear-gradient(135deg,#17130f,#a17a42);display:flex;align-items:center;justify-content:center;color:white;font:26px Georgia,serif}.info{padding:16px}.info h3{font:20px Georgia,serif}.price{color:#9b722e;font-weight:bold;margin:8px 0 14px}.buy{display:block;text-align:center;background:#111;color:white;padding:11px;border:1px solid var(--gold)}
+.contact{background:#080808;color:white;display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:60px 8%}.contact h2{font:34px Georgia,serif;color:var(--gold2);margin-bottom:15px}.contact p{color:#ddd;line-height:1.8}.contact-card{border:1px solid #6c5129;padding:28px;border-radius:10px}
+footer{background:#050505;color:#aaa;text-align:center;padding:25px;font-size:13px}
+@media(max-width:850px){.links{display:none}.menu{display:block}.hero{min-height:500px;padding:55px 7%}h1{font-size:40px}.features{grid-template-columns:repeat(2,1fr)}.categories{grid-template-columns:repeat(2,1fr)}.products{grid-template-columns:repeat(2,1fr)}.contact{grid-template-columns:1fr}}
+@media(max-width:480px){.topbar{font-size:11px}.hero{padding:45px 6%}h1{font-size:34px}.features,.products{grid-template-columns:1fr}.categories{grid-template-columns:1fr 1fr}.cat{height:125px;font-size:18px}.section{padding:45px 5%}}
+</style>
+</head>
+<body>
+<div class="topbar"><span>🚚 Livraison rapide partout</span><span>🛡️ Paiement sécurisé</span><span>↻ Satisfait ou remboursé</span></div>
+
+<nav>
+  <a class="logo" href="#">ES<small>ÉLÉGANCE STORE</small></a>
+  <div class="links"><a href="#accueil">ACCUEIL</a><a href="#boutique">BOUTIQUE</a><a href="#categories">CATÉGORIES</a><a href="#contact">CONTACT</a></div>
+  <div class="menu">☰</div>
+</nav>
+
+<section class="hero" id="accueil">
+  <div class="hero-content">
+    <div class="eyebrow">BIENVENUE CHEZ</div>
+    <h1>ÉLÉGANCE STORE</h1>
+    <p class="tagline">L’élégance à portée de clic</p>
+    <a class="btn gold" href="#boutique">DÉCOUVRIR NOS PRODUITS</a>
+    <a class="btn" href="#contact">NOUS CONTACTER</a>
+  </div>
+</section>
+
+<section class="features">
+  <div class="feature"><strong>↻ RETOUR FACILE</strong><span>Sous 7 jours</span></div>
+  <div class="feature"><strong>✦ PRODUITS DE QUALITÉ</strong><span>Sélectionnés avec soin</span></div>
+  <div class="feature"><strong>▣ PAIEMENT</strong><span>Mobile Money, carte, etc.</span></div>
+  <div class="feature"><strong>☎ BESOIN D'AIDE ?</strong><span>Contactez-nous</span></div>
+</section>
+
+<section class="section" id="categories">
+  <h2 class="title">NOS <span>CATÉGORIES</span></h2>
+  <div class="categories">
+    <a class="cat" href="#boutique">HABITS</a>
+    <a class="cat" href="#boutique">CHAUSSURES</a>
+    <a class="cat" href="#boutique">SACS</a>
+    <a class="cat" href="#boutique">ACCESSOIRES</a>
+    <a class="cat" href="#boutique">DIVERS</a>
+  </div>
+</section>
+
+<section class="section" id="boutique">
+  <h2 class="title">NOS <span>PRODUITS</span></h2>
+  <div class="products">
+    <article class="product"><div class="pic">👔 Habit</div><div class="info"><h3>Ensemble élégant</h3><div class="price">Prix à définir</div><a class="buy" href="#contact">COMMANDER</a></div></article>
+    <article class="product"><div class="pic">👗 Mode</div><div class="info"><h3>Robe tendance</h3><div class="price">Prix à définir</div><a class="buy" href="#contact">COMMANDER</a></div></article>
+    <article class="product"><div class="pic">👟 Chaussures</div><div class="info"><h3>Chaussures modernes</h3><div class="price">Prix à définir</div><a class="buy" href="#contact">COMMANDER</a></div></article>
+    <article class="product"><div class="pic">👜 Accessoire</div><div class="info"><h3>Sac élégant</h3><div class="price">Prix à définir</div><a class="buy" href="#contact">COMMANDER</a></div></article>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div><h2>Une question ?</h2><p>Contactez ÉLÉGANCE STORE pour connaître les disponibilités, les prix et les modalités de livraison.</p></div>
+  <div class="contact-card">
+    <p><strong>WhatsApp :</strong> +243 XXX XXX XXX</p>
+    <p><strong>Téléphone :</strong> +243 XXX XXX XXX</p>
+    <p><strong>Ville :</strong> À renseigner</p>
+    <br>
+    <a class="btn gold" href="https://wa.me/243000000000?text=Bonjour%20Élégance%20Store%2C%20je%20voudrais%20des%20informations." target="_blank">💬 CHAT WHATSAPP</a>
+  </div>
+</section>
+
+<footer>© 2026 ÉLÉGANCE STORE — Tous droits réservés.</footer>
+</body>
+</html>
