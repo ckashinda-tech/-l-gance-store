@@ -3,21 +3,286 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Administration - Élégance Store</title>
+  <title>Admin - Élégance Store</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .box {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background: black;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.8;
+    }
+
+    .produit {
+      background: white;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+    }
+
+    .produit img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .supprimer {
+      background: #c62828;
+    }
+
+    #message {
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+  </style>
 </head>
+
 <body>
-  <h1>Élégance Store</h1>
-  <h2>Espace administrateur</h2>
-  <p>Bienvenue dans ton espace de gestion.</p>
-  <h3>Ajouter un produit</h3>
-  <form>
-    <label>Nom du produit :</label><br>
-    <input type="text" placeholder="Ex : Robe élégante"><br><br>
-    <label>Prix :</label><br>
-    <input type="number" placeholder="Prix en FC"><br><br>
-    <label>Photo du produit :</label><br>
-    <input type="file" accept="image/*"><br><br>
-    <button type="button">Ajouter le produit</button>
-  </form>
+
+  <h1>🛍️ Élégance Store</h1>
+
+  <div class="box">
+    <h2>Ajouter un produit</h2>
+
+    <div id="message"></div>
+
+    <label>Nom du produit</label>
+    <input type="text" id="nom" placeholder="Ex : Robe élégante">
+
+    <label>Prix</label>
+    <input type="number" id="prix" placeholder="Ex : 35000">
+
+    <label>Photo</label>
+    <input type="file" id="photo" accept="image/*">
+
+    <button onclick="ajouterProduit()">
+      ➕ Ajouter le produit
+    </button>
+  </div>
+
+  <div class="box">
+    <h2>Produits enregistrés</h2>
+    <div id="listeProduits"></div>
+  </div>
+
+
+<script>
+const SUPABASE_URL = "https://nefvktlpzehxriyjyvoz.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_QtwEFoa4qOTcScAx7EUWKQ_hrY8VylR";
+
+
+async function ajouterProduit() {
+
+  const nom = document.getElementById("nom").value.trim();
+  const prix = document.getElementById("prix").value;
+  const photo = document.getElementById("photo").files[0];
+  const message = document.getElementById("message");
+
+  if (!nom || !prix || !photo) {
+    message.innerText = "⚠️ Remplis tous les champs.";
+    return;
+  }
+
+  message.innerText = "⏳ Ajout du produit...";
+
+  try {
+
+    // Nom unique pour la photo
+    const nomFichier =
+      Date.now() + "_" + photo.name.replace(/\s/g, "_");
+
+    // 1. Envoyer la photo dans Storage
+    const uploadResponse = await fetch(
+      SUPABASE_URL +
+      "/storage/v1/object/produits/" +
+      encodeURIComponent(nomFichier),
+      {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer " + SUPABASE_KEY,
+          "apikey": SUPABASE_KEY,
+          "Content-Type": photo.type
+        },
+        body: photo
+      }
+    );
+
+    if (!uploadResponse.ok) {
+      const erreur = await uploadResponse.text();
+      throw new Error(erreur);
+    }
+
+    // 2. Adresse publique de la photo
+    const imageUrl =
+      SUPABASE_URL +
+      "/storage/v1/object/public/produits/" +
+      encodeURIComponent(nomFichier);
+
+
+    // 3. Enregistrer le produit dans la base
+    const produitResponse = await fetch(
+      SUPABASE_URL + "/rest/v1/produits",
+      {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer " + SUPABASE_KEY,
+          "apikey": SUPABASE_KEY,
+          "Content-Type": "application/json",
+          "Prefer": "return=representation"
+        },
+        body: JSON.stringify({
+          nom: nom,
+          prix: Number(prix),
+          image_url: imageUrl
+        })
+      }
+    );
+
+    if (!produitResponse.ok) {
+      const erreur = await produitResponse.text();
+      throw new Error(erreur);
+    }
+
+    message.innerText = "✅ Produit ajouté avec succès !";
+
+    document.getElementById("nom").value = "";
+    document.getElementById("prix").value = "";
+    document.getElementById("photo").value = "";
+
+    afficherProduits();
+
+  } catch (error) {
+
+    console.error(error);
+
+    message.innerText =
+      "❌ Erreur : " + error.message;
+  }
+}
+
+
+async function afficherProduits() {
+
+  const liste =
+    document.getElementById("listeProduits");
+
+  liste.innerHTML = "⏳ Chargement...";
+
+  try {
+
+    const response = await fetch(
+      SUPABASE_URL +
+      "/rest/v1/produits?select=*&order=created_at.desc",
+      {
+        headers: {
+          "Authorization": "Bearer " + SUPABASE_KEY,
+          "apikey": SUPABASE_KEY
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+
+    const produits = await response.json();
+
+    liste.innerHTML = "";
+
+    if (produits.length === 0) {
+      liste.innerHTML = "Aucun produit pour le moment.";
+      return;
+    }
+
+    produits.forEach(produit => {
+
+      const div = document.createElement("div");
+
+      div.className = "produit";
+
+      div.innerHTML = `
+        <img src="${produit.image_url}" alt="${produit.nom}">
+        <h3>${produit.nom}</h3>
+        <p><strong>${produit.prix} FC</strong></p>
+        <button
+          class="supprimer"
+          onclick="supprimerProduit(${produit.id})">
+          🗑️ Supprimer
+        </button>
+      `;
+
+      liste.appendChild(div);
+    });
+
+  } catch (error) {
+
+    liste.innerHTML =
+      "❌ Impossible de charger les produits.";
+    console.error(error);
+  }
+}
+
+
+async function supprimerProduit(id) {
+
+  if (!confirm("Supprimer ce produit ?")) {
+    return;
+  }
+
+  try {
+
+    const response = await fetch(
+      SUPABASE_URL +
+      "/rest/v1/produits?id=eq." + id,
+      {
+        method: "DELETE",
+        headers: {
+          "Authorization": "Bearer " + SUPABASE_KEY,
+          "apikey": SUPABASE_KEY   }  }  );
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    afficherProduits();
+  } catch (error) {
+    alert("❌ Erreur lors de la suppression.");
+    console.error(error);}}
+// Charger les produits dès l'ouverture
+afficherProduits();
+</script>
 </body>
 </html>
